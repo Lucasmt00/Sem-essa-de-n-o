@@ -1,107 +1,115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sem essa de Não</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #1a1a1a, #333);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sem essa de Não</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .box {
-            font-size: 20px;
-            color: white;
-            height: 250px;
-            width: 350px;
-            border-radius: 10px;
-            background: #191919;
-            flex-direction: column;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .buttons-container {
-            display: flex;
-            justify-content: space-around;
-            height: 50px;
-            width: 170px;
-            margin-top: 20px;
-        }
+    .box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      height: 250px;
+      background-color: #191919;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
 
-        button {
-            height: 30px;
-            width: 60px;
-            background: white;
-            border-radius: 5px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    .buttons-container {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
 
-        .yes-button {
-            color: green; /* Cor do texto para o botão "Sim" */
-        }
+    button {
+      width: 60px;
+      height: 30px;
+      background: white;
+      border-radius: 5px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
 
-        .no-button {
-            color: red; /* Cor do texto para o botão "Não" */
-        }
+    button:hover {
+      transform: scale(1.1);
+    }
 
-        button:hover {
-            transform: scale(1.1);
-        }
-    </style>
+    .yes-button {
+      color: green;
+    }
+
+    .no-button {
+      color: red;
+    }
+
+    .no-absolute {
+      position: absolute;
+    }
+  </style>
 </head>
 <body>
-    <div class="box">
-        <p>Você me ama?</p>
-        <div class="buttons-container">
-            <button id="yes" class="yes-button">Sim</button>
-            <button id="no" class="no-button">Não</button>
-        </div>
+  <div class="box">
+    <p>Você me ama?</p>
+    <div class="buttons-container" id="buttons-container">
+      <button id="yes" class="yes-button">Sim</button>
+      <button id="no" class="no-button">Não</button>
     </div>
-    <script>
-        const noBtn = document.getElementById('no');
-        const yesBtn = document.getElementById('yes');
+  </div>
 
-        // Dimensões para limitar movimento
-        const btnHeight = 30;
-        const btnWidth = 60;
-        const padding = 10; // margem do botão da borda da janela
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const btnHeight = 30;
+    const btnWidth = 60;
+    const padding = 10;
 
-        function moveButtonRandomly(button) {
-            const heightLimit = window.innerHeight - btnHeight - padding;
-            const widthLimit = window.innerWidth - btnWidth - padding;
+    let firstClick = true;
 
-            const randomTop = Math.random() * heightLimit;
-            const randomLeft = Math.random() * widthLimit;
+    function moveButtonRandomly(button) {
+      const maxHeight = window.innerHeight - btnHeight - padding;
+      const maxWidth = window.innerWidth - btnWidth - padding;
 
-            button.style.position = 'absolute';
-            button.style.top = randomTop + 'px';
-            button.style.left = randomLeft + 'px';
-        }
+      const randomTop = Math.random() * maxHeight;
+      const randomLeft = Math.random() * maxWidth;
 
-        // Só move botão NÃO quando clicar nele
-        noBtn.addEventListener('click', () => {
-            moveButtonRandomly(noBtn);
-        });
+      button.style.top = `${randomTop}px`;
+      button.style.left = `${randomLeft}px`;
+    }
 
-        // Clicar no SIM não faz nada com o botão NÃO
-        yesBtn.addEventListener('click', () => {
-            // Não mover botão 'Não'
-        });
-    </script>
+    noBtn.addEventListener("click", () => {
+      if (firstClick) {
+        firstClick = false;
+        // Remove do container e adiciona ao body
+        const body = document.querySelector("body");
+        noBtn.classList.add("no-absolute");
+        body.appendChild(noBtn);
+      }
+      moveButtonRandomly(noBtn);
+    });
+  </script>
 </body>
 </html>
